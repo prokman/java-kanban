@@ -1,16 +1,17 @@
-package Service;
+package service;
 
-import Model.Epic;
-import Model.Status;
-import Model.SubTask;
-import Model.Task;
+import model.Epic;
+import model.Status;
+import model.SubTask;
+import model.Task;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TaskManager {
-    HashMap<Integer, Task> tasks;
-    HashMap<Integer, Epic> epics;
-    HashMap<Integer, SubTask> subTasks;
+    private final HashMap<Integer, Task> tasks;
+    private final HashMap<Integer, Epic> epics;
+    private final HashMap<Integer, SubTask> subTasks;
     int id = 0;
 
     public TaskManager() {
@@ -84,10 +85,11 @@ public class TaskManager {
 
     public SubTask addSubTask(SubTask subTask) {
         subTask.setId(genId());
-        final Epic epic = epics.get(subTask.getEpic().getId());
-        epic.addSubTasks(subTask);
-        epic.setStatus(getEpicStatus(epic));
         subTasks.put(subTask.getId(), subTask);
+        final Epic epic = epics.get(subTask.getEpicId());
+        epic.addSubTasks(subTask.getId());
+        epic.setStatus(getEpicStatus(epic));
+
         return subTask;
     }
 
@@ -118,8 +120,8 @@ public class TaskManager {
             existSubTaskForUpdate.setName(subTask.getName());
             existSubTaskForUpdate.setDescription(subTask.getDescription());
             existSubTaskForUpdate.setStatus(subTask.getStatus());
-            final Epic epic = epics.get(subTask.getEpic().getId());
-            epic.updateSubTasks(existSubTaskForUpdate);
+            final Epic epic = epics.get(subTask.getEpicId());
+            //epic.updateSubTasks(existSubTaskForUpdate.getId());
             epic.setStatus(getEpicStatus(epic));
             epics.put(epic.getId(), epic);
             subTasks.put(existSubTaskForUpdate.getId(), existSubTaskForUpdate);
@@ -134,16 +136,17 @@ public class TaskManager {
 
     public void removeEpicsById(Integer id) {
         final Epic epic = epics.remove(id);
-        HashMap<Integer, SubTask> SubTaskForDel = epic.getSubTasks();
-        for (Integer idSubTaskForDel : SubTaskForDel.keySet()) {
-            subTasks.remove(idSubTaskForDel);
+        final ArrayList<Integer> SubTaskForDel = epic.getListSubTasksId();
+        for (Integer idSubTaskForDel : SubTaskForDel) {
+            subTasks.remove(SubTaskForDel.get(idSubTaskForDel));
         }
     }
 
     public void removeSubTasksById(Integer id) {
         final SubTask remmovedSubTask = subTasks.remove(id);
-        final Epic epic = remmovedSubTask.getEpic();
-        epic.removeSubTasks(remmovedSubTask);
+        final int epicId = remmovedSubTask.getEpicId();
+        Epic epic=epics.get(epicId);
+        epic.removeSubTasks(id);
         epic.setStatus(getEpicStatus(epic));
         epics.put(epic.getId(), epic);
     }
@@ -152,8 +155,12 @@ public class TaskManager {
     //получение списка всех поздадач эпика
     public HashMap<Integer, SubTask> getSubTaskByEpic(Integer EpicId) {
         Epic epic = epics.get(EpicId);
-        final HashMap<Integer, SubTask> SubTasks = epic.getSubTasks();
-        return SubTasks;
+        final ArrayList<Integer> SubTasksId = epic.getListSubTasksId();
+        HashMap<Integer, SubTask> SubTaskOfEpic= new HashMap<>();
+        for (Integer Id : SubTasksId) {
+            SubTaskOfEpic.put(Id,subTasks.get(Id))    ;
+        }
+        return SubTaskOfEpic;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -162,13 +169,14 @@ public class TaskManager {
         boolean isNew = true;
         boolean isDone = true;
 
-        final HashMap<Integer, SubTask> SubTasks = epic.getSubTasks();
-        if (SubTasks.isEmpty()) {
+        final ArrayList<Integer> ListSubTasksId = epic.getListSubTasksId();
+        if (ListSubTasksId.isEmpty()) {
             return Status.NEW;
         } else {
-            for (int id : SubTasks.keySet()) {
+            for (int id : ListSubTasksId) {
 
-                SubTask subTask = SubTasks.get(id);
+                //SubTask subTask = SubTasks.get(id);
+                SubTask subTask=subTasks.get(id);
                 isNew = isNew && subTask.getStatus().equals(Status.NEW);
                 isDone = isDone && subTask.getStatus().equals(Status.DONE);
             }
