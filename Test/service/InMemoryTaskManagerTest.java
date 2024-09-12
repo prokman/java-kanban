@@ -13,6 +13,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     void addTaskTest() {
+        //Проверка добавления и поиска задачи по ID
         InMemoryTaskManager TM = new InMemoryTaskManager(new InMemoryHistoryManager());
         Task task1= new Task("Task1","TDescript1", Status.NEW);
         TM.addTask(task1);
@@ -21,6 +22,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     void addEpicTest() {
+        //Проверка добавления и поиска епика по ID
         InMemoryTaskManager TM = new InMemoryTaskManager(new InMemoryHistoryManager());
         Epic epic1=new Epic("Epic1", "EDescript1",Status.NEW);
         TM.addTask(epic1);
@@ -29,6 +31,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     void addSubTask() {
+        //Проверка добавления и поиска сабТаска по ID
         InMemoryTaskManager TM = new InMemoryTaskManager(new InMemoryHistoryManager());
         SubTask subTask1=new SubTask("subtask1", "StDescript1",Status.NEW,1);
         TM.addTask(subTask1);

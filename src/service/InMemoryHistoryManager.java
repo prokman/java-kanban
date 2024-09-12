@@ -15,8 +15,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         history = new ArrayList<>(initialCapacity);
     }
 
-    //@Override
-    //public <T extends Task> add (T task) {
 
     @Override
     public <T extends Task> void add (T task) {
