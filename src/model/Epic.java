@@ -17,10 +17,14 @@ public class Epic extends Task {
     }
 
     public void addSubTasks(Integer subTasksId) {
+        if (subTasksId!=this.getId()) {
         this.ListSubTasksId.add(subTasksId);
+        }
     }
 
     public void removeSubTasks(Integer subTasksId) {
         this.ListSubTasksId.remove(subTasksId);
     }
+
+
 }
