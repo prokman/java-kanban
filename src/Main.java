@@ -118,6 +118,12 @@ public class Main {
         System.out.println();
         System.out.println("ИСТОРИЯ ПРОСМОТРОВ - " + taskManager.getHistory());
 
+
+        taskManager.getHistory().clear();
+        System.out.println();
+        System.out.println("ИСТОРИЯ ПРОСМОТРОВ после попытки очистки из вне - " + taskManager.getHistory());
+
+
         taskManager.clearTasks();
         taskManager.clearEpics();
         System.out.println("очистка");
