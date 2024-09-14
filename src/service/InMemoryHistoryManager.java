@@ -2,7 +2,6 @@ package service;
 
 import model.Task;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,13 +13,12 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     public InMemoryHistoryManager() {
         history = new LinkedList<>();
-        //  new linked(initialCapacity);
     }
 
 
     @Override
-    public <T extends Task> void add (T task) {
-        if (task!=null) {
+    public <T extends Task> void add(T task) {
+        if (task != null) {
             if (historyIndex < historyCapacity) {
                 history.add(task);
                 historyIndex++;
@@ -31,6 +29,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
 
     }
+
     @Override
     public List<Task> getAll() {
         return new LinkedList<>(history);
