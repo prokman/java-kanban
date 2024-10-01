@@ -67,19 +67,19 @@ public class InMemoryTaskManager implements TaskManager {
     //методы получения по идентификатору
     @Override
     public Task getTasksById(Integer id) {
-        historyManager.add (tasks.get(id));
+        historyManager.add (tasks.get(id), id);
         return tasks.get(id);
     }
 
     @Override
     public Epic getEpicsById(Integer id) {
-        historyManager.add (epics.get(id));
+        historyManager.add (epics.get(id), id);
         return epics.get(id);
     }
 
     @Override
     public SubTask getSubTasksById(Integer id) {
-        historyManager.add (subTasks.get(id));
+        historyManager.add (subTasks.get(id), id);
         return subTasks.get(id);
     }
 
