@@ -5,7 +5,7 @@ public class SubTask extends Task {
 
     public SubTask(String name, String description, Status statusOfsubTask, int epicId) {
         super(name, description, statusOfsubTask);
-        if (this.getId()!=epicId) {
+        if (this.getId() != epicId) {
             this.epicId = epicId;
         } else {
             this.epicId = -1;
@@ -15,7 +15,7 @@ public class SubTask extends Task {
 
     public SubTask(String name, String description, Status statusOfsubTask, int id, int epicId) {
         super(name, description, statusOfsubTask, id);
-        if (this.getId()!=epicId) {
+        if (this.getId() != epicId) {
             this.epicId = epicId;
         } else {
             this.epicId = -1;
@@ -29,7 +29,7 @@ public class SubTask extends Task {
     }
 
     public void setEpic(int epicId) {
-        if (epicId!=this.getId()) {
+        if (epicId != this.getId()) {
             this.epicId = epicId;
         }
 
