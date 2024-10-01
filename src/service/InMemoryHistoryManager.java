@@ -71,10 +71,10 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public List<Task> getAll() {
-        ArrayList<Task> ArrayOfhistory = new ArrayList<>();
+        ArrayList<Task> arrayOfhistory = new ArrayList<>();
         for (Node item = first; item != null; item = item.next) {
-            ArrayOfhistory.add(item.item);
+            arrayOfhistory.add(item.item);
         }
-        return ArrayOfhistory;
+        return arrayOfhistory;
     }
 }
