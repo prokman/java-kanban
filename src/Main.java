@@ -131,6 +131,5 @@ public class Main {
         System.out.println("вывод тасков- " + taskManager.getTasks());
         System.out.println("вывод епиков- " + taskManager.getEpics());
         System.out.println("вывод сабтасков- " + taskManager.getSubTasks());
-
     }
 }
