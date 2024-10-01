@@ -18,7 +18,6 @@ public class Main {
         Epic epic2=new Epic("Epic2", "EDescript2",Status.NEW);
         Epic epic3=new Epic("Epic3", "EDescript3",Status.NEW);
 
-
         SubTask subTask1=new SubTask("subtask1", "StDescript1",Status.NEW,3);
         SubTask subTask2=new SubTask("subtask2", "StDescript2",Status.NEW,3);
         SubTask subTask3=new SubTask("subtask3", "StDescript3",Status.NEW,3);
@@ -92,27 +91,29 @@ public class Main {
 
 
         System.out.println();
-        System.out.println("вывод таск по ид "+ taskManager.getTasksById(1));
+       System.out.println("вывод таск по ид "+ taskManager.getTasksById(1));
         System.out.println();
         System.out.println("вывод эпик по ид "+ taskManager.getEpicsById(3));
         System.out.println();
-        System.out.println("вывод Сабтасков по ид "+ taskManager.getSubTasksById(7));
+        System.out.println("вывод Сабтасков по ид "+ taskManager.getSubTasksById(7));//1 3 7
         System.out.println();
-        System.out.println("вывод таск по ид "+ taskManager.getTasksById(1));
+       System.out.println("вывод таск по ид "+ taskManager.getTasksById(1)); // 3 7 1
+         System.out.println();
+        System.out.println("вывод эпик по ид "+ taskManager.getEpicsById(3)); // 7 1 3
         System.out.println();
-        System.out.println("вывод эпик по ид "+ taskManager.getEpicsById(3));
+        System.out.println("вывод эпик по ид "+ taskManager.getEpicsById(3)); // 7 1 3
+      System.out.println();
+        System.out.println("вывод Сабтасков по ид "+ taskManager.getSubTasksById(7)); // 1 3 7
         System.out.println();
-        System.out.println("вывод Сабтасков по ид "+ taskManager.getSubTasksById(7));
+        System.out.println("вывод таск по ид "+ taskManager.getTasksById(1)); // 3 7 1
         System.out.println();
-        System.out.println("вывод таск по ид "+ taskManager.getTasksById(1));
+        System.out.println("вывод эпик по ид "+ taskManager.getEpicsById(3)); // 7 1 3
         System.out.println();
-        System.out.println("вывод эпик по ид "+ taskManager.getEpicsById(3));
+        System.out.println("вывод Сабтасков по ид "+ taskManager.getSubTasksById(7)); // 1 3 7
         System.out.println();
-        System.out.println("вывод Сабтасков по ид "+ taskManager.getSubTasksById(7));
+        System.out.println("вывод таск по ид "+ taskManager.getTasksById(1)); // 3 7 1
         System.out.println();
-        System.out.println("вывод таск по ид "+ taskManager.getTasksById(1));
-        System.out.println();
-        System.out.println("вывод Сабтасков по ид "+ taskManager.getSubTasksById(7));
+        System.out.println("вывод Сабтасков по ид "+ taskManager.getSubTasksById(7)); // 3 1 7
 
 
         System.out.println();
