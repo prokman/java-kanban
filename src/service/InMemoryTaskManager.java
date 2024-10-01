@@ -180,14 +180,14 @@ public class InMemoryTaskManager implements TaskManager {
     ///////////////////////////////////////////////////////////////////////////////////////////
     //получение списка всех поздадач эпика
     @Override
-    public HashMap<Integer, SubTask> getSubTaskByEpic(Integer EpicId) {
-        Epic epic = epics.get(EpicId);
+    public HashMap<Integer, SubTask> getSubTaskByEpic(Integer epicId) {
+        Epic epic = epics.get(epicId);
         final ArrayList<Integer> SubTasksId = epic.getListSubTasksId();
-        HashMap<Integer, SubTask> SubTaskOfEpic = new HashMap<>();
-        for (Integer Id : SubTasksId) {
-            SubTaskOfEpic.put(Id, subTasks.get(Id));
+        HashMap<Integer, SubTask> subTaskOfEpic = new HashMap<>();
+        for (Integer id : SubTasksId) {
+            subTaskOfEpic.put(id, subTasks.get(id));
         }
-        return SubTaskOfEpic;
+        return subTaskOfEpic;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
