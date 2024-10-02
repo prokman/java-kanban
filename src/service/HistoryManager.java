@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface HistoryManager {
 
-    <T extends Task> void add(T task, Integer id);
+    <T extends Task> void add(T task);
 
 
     void removeNode(Integer id);

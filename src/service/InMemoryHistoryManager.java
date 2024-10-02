@@ -20,17 +20,17 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-    Node first;
-    Node last;
+    private Node first;
+    private Node last;
 
     void linkLast(Task task) {
-        final Node Last = last;
-        final Node newNode = new Node(Last, task, null);
+        final Node oldLast = last;
+        final Node newNode = new Node(oldLast, task, null);
         last = newNode;
-        if (Last == null) {
+        if (oldLast == null) {
             first = newNode;
         } else {
-            Last.next = newNode;
+            oldLast.next = newNode;
         }
     }
 
@@ -63,10 +63,12 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     @Override
-    public <T extends Task> void add(T task, Integer id) {
-        removeNode(id);
-        linkLast(task);
-        history.put(id, last);
+    public <T extends Task> void add(T task) {
+        if (task!=null) {
+            removeNode(task.getId());
+            linkLast(task);
+            history.put(task.getId(), last);
+        }
     }
 
     @Override
