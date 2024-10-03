@@ -62,12 +62,9 @@ public interface TaskManager {
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     //получение списка всех поздадач эпика
-    HashMap<Integer, SubTask> getSubTaskByEpic(Integer EpicId);
+    HashMap<Integer, SubTask> getSubTaskByEpic(Integer epicId);
 
     List<Task> getHistory();
-
-
-
 
 
 }
