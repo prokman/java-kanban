@@ -103,16 +103,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
 
         ////Создаем таски/сабтаски/эпики с использованием заготовленных полей
         if (sbType.toString().equals(TypeOfTask.TASK.toString())) {
-            int id = Integer.valueOf(sbId.toString());
+            int id = Integer.parseInt(sbId.toString());
             Task task = new Task(sbName.toString(), sbDescription.toString(), Status.valueOf(sbStatus.toString()), id);
             return task;
         } else if (sbType.toString().equals(TypeOfTask.SUBTASK.toString())) {
-            int id = Integer.valueOf(sbId.toString());
-            int EpicId = Integer.valueOf(sbEpicId.toString());
+            int id = Integer.parseInt(sbId.toString());
+            int EpicId = Integer.parseInt(sbEpicId.toString());
             SubTask subTask = new SubTask(sbName.toString(), sbDescription.toString(), Status.valueOf(sbStatus.toString()), id, EpicId);
             return subTask;
         } else {
-            int id = Integer.valueOf(sbId.toString());
+            int id = Integer.parseInt(sbId.toString());
             Epic epic = new Epic(sbName.toString(), sbDescription.toString(), Status.valueOf(sbStatus.toString()), id);
             return epic;
         }
