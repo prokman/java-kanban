@@ -108,8 +108,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
             return task;
         } else if (sbType.toString().equals(TypeOfTask.SUBTASK.toString())) {
             int id = Integer.parseInt(sbId.toString());
-            int EpicId = Integer.parseInt(sbEpicId.toString());
-            SubTask subTask = new SubTask(sbName.toString(), sbDescription.toString(), Status.valueOf(sbStatus.toString()), id, EpicId);
+            int epicId = Integer.parseInt(sbEpicId.toString());
+            SubTask subTask = new SubTask(sbName.toString(), sbDescription.toString(), Status.valueOf(sbStatus.toString()), id, epicId);
             return subTask;
         } else {
             int id = Integer.parseInt(sbId.toString());
@@ -149,10 +149,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
                 }
             }
             super.id = maxId;
-            for (Integer SubTuskId : subTasks.keySet()) {
+            for (Integer subTuskId : subTasks.keySet()) {
                 //subTasks.put(subTask.getId(), subTask);
-                final Epic epic = epics.get(subTasks.get(SubTuskId).getEpicId());
-                epic.addSubTasks(SubTuskId);
+                final Epic epic = epics.get(subTasks.get(subTuskId).getEpicId());
+                epic.addSubTasks(subTuskId);
                 epic.setStatus(getEpicStatus(epic));
             }
         } catch (IOException e) {
