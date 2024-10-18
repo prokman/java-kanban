@@ -26,8 +26,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private int genId() {
-        id++;
-        return id;
+
+        return id++;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

@@ -1,12 +1,13 @@
 0,TASK,Task1,NEW,TDescript1
-16,TASK,Task1,NEW,TDescript1
 1,TASK,Task2,NEW,TDescript2
-17,SUBTASK,subtask1,NEW,StDescript1,1
+17,TASK,Task1,NEW,TDescript1
 2,TASK,Task3,NEW,TDescript3
+18,SUBTASK,subtask1,NEW,StDescript1,1
+16,EPIC,Epic1,NEW,EDescript1
 3,EPIC,Epic1,NEW,EDescript1
-4,EPIC,Epic2,NEW,EDescript2
+4,EPIC,Epic2,IN_PROGRESS,EDescript2
 5,EPIC,Epic3,NEW,EDescript3
-15,EPIC,Epic1,NEW,EDescript1
+6,SUBTASK,subtask1,NEW,StDescript1,3
 7,SUBTASK,subtask2,NEW,StDescript2,3
 8,SUBTASK,subtask3,NEW,StDescript3,3
 9,SUBTASK,subtask4,NEW,StDescript4,4
@@ -14,4 +15,5 @@
 11,SUBTASK,subtask6,NEW,StDescript6,4
 12,SUBTASK,subtask7,NEW,StDescript4,5
 13,SUBTASK,subtask8,NEW,StDescript5,5
-14,SUBTASK,subtask155,NEW,StDescript155,5
+14,SUBTASK,subtask9,NEW,StDescript6,5
+15,SUBTASK,subtask10,IN_PROGRESS,StDescript10,4

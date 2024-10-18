@@ -14,11 +14,10 @@ public class Main {
         System.out.println("вывод сабтасков- " + taskManager.getSubTasks());
         System.out.println();
 
-
         SubTask subTask10 = new SubTask("subtask10", "StDescript10", Status.IN_PROGRESS, 4);
         //taskManager.updateSubTask(subTask10);
-        //taskManager.addSubTask(subTask10);
-        taskManager.removeSubTasksById(15);
+        taskManager.addSubTask(subTask10);
+        //taskManager.removeSubTasksById(15);
 
         System.out.println();
         System.out.println("вывод сабтасков- " + taskManager.getSubTasks());
