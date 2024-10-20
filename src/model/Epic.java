@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 
-
 public class Epic extends Task {
     private final ArrayList<Integer> listSubTasksId;
 
@@ -35,6 +34,4 @@ public class Epic extends Task {
     public TypeOfTask getType() {
         return TypeOfTask.EPIC;
     }
-
-
 }
