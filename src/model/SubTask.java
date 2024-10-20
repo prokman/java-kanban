@@ -1,7 +1,7 @@
 package model;
 
 public class SubTask extends Task {
-    int epicId;
+    private int epicId;
 
     public SubTask(String name, String description, Status statusOfsubTask, int epicId) {
         super(name, description, statusOfsubTask);
@@ -33,5 +33,9 @@ public class SubTask extends Task {
             this.epicId = epicId;
         }
 
+    }
+
+    public TypeOfTask getType() {
+        return TypeOfTask.SUBTASK;
     }
 }

@@ -11,7 +11,7 @@ class InMemoryHistoryManagerTest {
     @Test
     void addTask() {
         //Проверка сохранения истории в HistoryManager
-        TaskManager taskManager = Managers.getDefault();
+        TaskManager taskManager = Managers.getDefaultNoFile();
         Task task1 = new Task("Task1", "TDescript1", Status.NEW);
         Task task2 = new Task("Task2", "TDescript2", Status.NEW);
         Task task3 = new Task("Task3", "TDescript3", Status.NEW);
