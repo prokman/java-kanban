@@ -34,4 +34,7 @@ public class SubTask extends Task {
         }
 
     }
+    public TypeOfTask getType() {
+        return TypeOfTask.SUBTASK;
+    }
 }

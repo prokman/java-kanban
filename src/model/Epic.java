@@ -32,5 +32,9 @@ public class Epic extends Task {
         this.listSubTasksId.remove(subTasksId);
     }
 
+    public TypeOfTask getType() {
+        return TypeOfTask.EPIC;
+    }
+
 
 }

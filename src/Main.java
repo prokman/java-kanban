@@ -1,12 +1,15 @@
+import model.Epic;
 import model.Status;
 import model.SubTask;
+import model.Task;
 import service.*;
 
 public class Main {
 
     public static void main(String[] args) {
         TaskManager taskManager = Managers.getDefault();
-        System.out.println("файл загружен");
+
+        /*System.out.println("файл загружен");
         System.out.println("вывод тасков- " + taskManager.getTasks());
         System.out.println();
         System.out.println("вывод епиков- " + taskManager.getEpics());
@@ -20,11 +23,11 @@ public class Main {
         //taskManager.removeSubTasksById(15);
 
         System.out.println();
-        System.out.println("вывод сабтасков- " + taskManager.getSubTasks());
+        System.out.println("вывод сабтасков- " + taskManager.getSubTasks());*/
 
 
         ///блок для загрузки задач
-       /* Task task1 = new Task("Task1", "TDescript1", Status.NEW);//0
+        Task task1 = new Task("Task1", "TDescript1", Status.NEW);//0
         Task task2 = new Task("Task2", "TDescript2", Status.NEW);//1
         Task task3 = new Task("Task3", "TDescript3", Status.NEW);//2
 
@@ -74,7 +77,7 @@ public class Main {
         taskManager.addSubTask(subTask8);
         taskManager.addSubTask(subTask9);
 
-        System.out.println("вывод сабтасков- " + taskManager.getSubTasks());*/
+        System.out.println("вывод сабтасков- " + taskManager.getSubTasks());
         ///конец блока для загрузки задач
 
     }

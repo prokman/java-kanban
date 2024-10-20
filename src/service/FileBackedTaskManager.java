@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager {
+public class FileBackedTaskManager extends InMemoryTaskManager {
     private String fileName;
 
     public FileBackedTaskManager(HistoryManager historyManager, String fileName) {
@@ -23,98 +23,22 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
             return;
         }
         try (FileWriter fr = new FileWriter(fileName); BufferedWriter bw = new BufferedWriter(fr)) {
-
             for (Integer id : tasks.keySet()) {
-                bw.write(toString(tasks.get(id)));
+                bw.write(StringConstructorForCSV.toStringCSV(tasks.get(id)));
                 bw.newLine();
             }
             for (Integer id : epics.keySet()) {
-                bw.write(toString(epics.get(id)));
+                bw.write(StringConstructorForCSV.toStringCSV(epics.get(id)));
                 bw.newLine();
             }
             for (Integer id : subTasks.keySet()) {
-                bw.write(toString(subTasks.get(id)));
+                bw.write(StringConstructorForCSV.toStringCSV(subTasks.get(id)));
                 bw.newLine();
             }
 
         } catch (IOException e) {
             e.printStackTrace();
-            throw new ManagerSaveException();
-        }
-    }
-
-    private String toString(Task task) {
-        String lineForPrint;
-        if (task instanceof Epic) {
-            lineForPrint = task.getId() + "," + TypeOfTask.EPIC + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription();
-        } else if (task instanceof SubTask) {
-            lineForPrint = task.getId() + "," + TypeOfTask.SUBTASK + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription() + "," + ((SubTask) task).getEpicId();
-        } else {
-            lineForPrint = task.getId() + "," + TypeOfTask.TASK + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription();
-        }
-        return lineForPrint;
-    }
-
-
-    private Task fromString(String value) {
-        int fieldNumber = 0;
-
-        StringBuilder sbId = new StringBuilder();//fieldNumber-0
-        StringBuilder sbType = new StringBuilder();//fieldNumber-1
-        StringBuilder sbName = new StringBuilder();//fieldNumber-2
-        StringBuilder sbStatus = new StringBuilder();//fieldNumber-3
-        StringBuilder sbDescription = new StringBuilder();//fieldNumber-4
-        StringBuilder sbEpicId = new StringBuilder();//fieldNumber-5
-
-        ////Разбираем строку на отдельные поля
-        for (int i = 0; i < value.length(); i++) {
-            if (value.charAt(i) != ',' && fieldNumber == 0) {
-                sbId.append(value.charAt(i));
-                if (i != value.length() - 1) {
-                    if (value.charAt(i + 1) == ',') fieldNumber++;
-                }
-            } else if (value.charAt(i) != ',' && fieldNumber == 1) {
-                sbType.append(value.charAt(i));
-                if (i != value.length() - 1) {
-                    if (value.charAt(i + 1) == ',') fieldNumber++;
-                }
-            } else if (value.charAt(i) != ',' && fieldNumber == 2) {
-                sbName.append(value.charAt(i));
-                if (i != value.length() - 1) {
-                    if (value.charAt(i + 1) == ',') fieldNumber++;
-                }
-            } else if (value.charAt(i) != ',' && fieldNumber == 3) {
-                sbStatus.append(value.charAt(i));
-                if (i != value.length() - 1) {
-                    if (value.charAt(i + 1) == ',') fieldNumber++;
-                }
-            } else if (value.charAt(i) != ',' && fieldNumber == 4) {
-                sbDescription.append(value.charAt(i));
-                if (i != value.length() - 1) {
-                    if (value.charAt(i + 1) == ',') fieldNumber++;
-                }
-            } else if (value.charAt(i) != ',' && fieldNumber == 5) {
-                sbEpicId.append(value.charAt(i));
-                if (i != value.length() - 1) {
-                    if (value.charAt(i + 1) == ',') fieldNumber++;
-                }
-            }
-        }
-
-        ////Создаем таски/сабтаски/эпики с использованием заготовленных полей
-        if (sbType.toString().equals(TypeOfTask.TASK.toString())) {
-            int id = Integer.parseInt(sbId.toString());
-            Task task = new Task(sbName.toString(), sbDescription.toString(), Status.valueOf(sbStatus.toString()), id);
-            return task;
-        } else if (sbType.toString().equals(TypeOfTask.SUBTASK.toString())) {
-            int id = Integer.parseInt(sbId.toString());
-            int epicId = Integer.parseInt(sbEpicId.toString());
-            SubTask subTask = new SubTask(sbName.toString(), sbDescription.toString(), Status.valueOf(sbStatus.toString()), id, epicId);
-            return subTask;
-        } else {
-            int id = Integer.parseInt(sbId.toString());
-            Epic epic = new Epic(sbName.toString(), sbDescription.toString(), Status.valueOf(sbStatus.toString()), id);
-            return epic;
+            throw new ManagerSaveException("Ошибка в файле" + path);
         }
     }
 
@@ -138,11 +62,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
             int maxId = 0;
             while (br.ready()) {
                 String taskLine = br.readLine();
-                Task taskForLoad = fromString(taskLine);
+                Task taskForLoad = StringConstructorForCSV.fromStringCSV(taskLine);
                 if (maxId < taskForLoad.getId()) maxId = taskForLoad.getId();
-                if (taskForLoad instanceof Epic) {
+                if (taskForLoad.getType().equals(TypeOfTask.EPIC)) {
                     epics.put(taskForLoad.getId(), (Epic) taskForLoad);
-                } else if (taskForLoad instanceof SubTask) {
+                } else if (taskForLoad.getType().equals(TypeOfTask.SUBTASK)) {
                     subTasks.put(taskForLoad.getId(), (SubTask) taskForLoad);
                 } else {
                     tasks.put(taskForLoad.getId(), taskForLoad);
@@ -150,7 +74,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
             }
             super.id = maxId + 1;
             for (Integer subTuskId : subTasks.keySet()) {
-                //subTasks.put(subTask.getId(), subTask);
                 final Epic epic = epics.get(subTasks.get(subTuskId).getEpicId());
                 epic.addSubTasks(subTuskId);
                 epic.setStatus(getEpicStatus(epic));
