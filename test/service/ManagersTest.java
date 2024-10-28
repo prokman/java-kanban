@@ -9,7 +9,7 @@ class ManagersTest {
     @Test
     void getDefaultRerurnInMemoryTaskManager() {
         //класс возвращает экземпляр менеджера
-        TaskManager taskManager = Managers.getDefault();
+        TaskManager taskManager = Managers.getDefaultNoFile();
         assertTrue(taskManager instanceof InMemoryTaskManager);
     }
 
