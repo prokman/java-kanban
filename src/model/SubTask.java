@@ -1,5 +1,8 @@
 package model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class SubTask extends Task {
     private int epicId;
 
@@ -10,21 +13,29 @@ public class SubTask extends Task {
         } else {
             this.epicId = -1;
         }
-
     }
 
-    public SubTask(String name, String description, Status statusOfsubTask, int id, int epicId) {
-        super(name, description, statusOfsubTask, id);
+    public SubTask(String name, String description, Status statusOfsubTask,
+                   LocalDateTime startTime, Duration duration, int epicId) {
+        super(name, description, statusOfsubTask, startTime, duration);
         if (this.getId() != epicId) {
             this.epicId = epicId;
         } else {
             this.epicId = -1;
         }
+    }
 
+    public SubTask(String name, String description, Status statusOfsubTask,
+                   LocalDateTime startTime, Duration duration, int id, int epicId) {
+        super(name, description, statusOfsubTask, startTime, duration, id);
+        if (this.getId() != epicId) {
+            this.epicId = epicId;
+        } else {
+            this.epicId = -1;
+        }
     }
 
     public int getEpicId() {
-
         return epicId;
     }
 
@@ -32,7 +43,6 @@ public class SubTask extends Task {
         if (epicId != this.getId()) {
             this.epicId = epicId;
         }
-
     }
 
     public TypeOfTask getType() {

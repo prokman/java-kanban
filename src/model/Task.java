@@ -1,5 +1,7 @@
 package model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
@@ -7,17 +9,33 @@ public class Task {
     private String name;
     private String description;
     private Status status;
+    private LocalDateTime startTime;
+    private Duration duration;
 
     public Task(String name, String description, Status statusOfTask) {
         this.name = name;
         this.description = description;
         this.status = statusOfTask;
+        this.duration = Duration.ofMinutes(10);
+        this.startTime = LocalDateTime.now();
     }
 
-    public Task(String name, String description, Status statusOfTask, int id) {
+    public Task(String name, String description, Status statusOfTask,
+                LocalDateTime startTime, Duration duration) {
         this.name = name;
         this.description = description;
         this.status = statusOfTask;
+        this.duration = duration;
+        this.startTime = startTime;
+    }
+
+    public Task(String name, String description, Status statusOfTask,
+                LocalDateTime startTime, Duration duration, int id) {
+        this.name = name;
+        this.description = description;
+        this.status = statusOfTask;
+        this.duration = duration;
+        this.startTime = startTime;
         this.id = id;
     }
 
@@ -73,10 +91,32 @@ public class Task {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
+                ", startTime=" + startTime +
+                ", duration=" + duration +
                 '}';
     }
 
     public TypeOfTask getType() {
         return TypeOfTask.TASK;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getEndTime() {
+        return startTime.plus(duration);
     }
 }

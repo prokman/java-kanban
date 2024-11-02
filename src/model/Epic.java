@@ -1,19 +1,28 @@
 package model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Epic extends Task {
     private final ArrayList<Integer> listSubTasksId;
 
+
     public Epic(String name, String description, Status statusOfEpic) {
         super(name, description, statusOfEpic);
-        //this.subTasksId = new HashMap<>();
         this.listSubTasksId = new ArrayList<>();
     }
 
-    public Epic(String name, String description, Status statusOfEpic, int id) {
-        super(name, description, statusOfEpic, id);
-        //this.subTasksId = new HashMap<>();
+    public Epic(String name, String description, Status statusOfEpic,
+                LocalDateTime startTime, Duration duration) {
+        super(name, description, statusOfEpic, startTime, duration);
+        this.listSubTasksId = new ArrayList<>();
+    }
+
+    public Epic(String name, String description, Status statusOfEpic,
+                LocalDateTime startTime, Duration duration,
+                int id) {
+        super(name, description, statusOfEpic, startTime, duration, id);
         this.listSubTasksId = new ArrayList<>();
     }
 
