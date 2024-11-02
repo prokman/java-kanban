@@ -4,6 +4,9 @@ import model.Status;
 import model.Task;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
@@ -12,9 +15,9 @@ class InMemoryHistoryManagerTest {
     void addTask() {
         //Проверка сохранения истории в HistoryManager
         TaskManager taskManager = Managers.getDefaultNoFile();
-        Task task1 = new Task("Task1", "TDescript1", Status.NEW);
-        Task task2 = new Task("Task2", "TDescript2", Status.NEW);
-        Task task3 = new Task("Task3", "TDescript3", Status.NEW);
+        Task task1 = new Task("Task1", "TDescript1", Status.NEW, LocalDateTime.parse("2024-10-31T00:30"), Duration.parse("PT5M"));//0
+        Task task2 = new Task("Task2", "TDescript2", Status.NEW, LocalDateTime.parse("2024-10-31T00:20"), Duration.parse("PT5M"));//1
+        Task task3 = new Task("Task3", "TDescript3", Status.NEW, LocalDateTime.parse("2024-10-31T00:00"), Duration.parse("PT5M"));//2
         taskManager.addTask(task1);
         taskManager.addTask(task2);
         taskManager.addTask(task3);
