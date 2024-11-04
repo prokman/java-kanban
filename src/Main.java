@@ -11,35 +11,6 @@ public class Main {
 
     public static void main(String[] args) {
         TaskManager taskManager = Managers.getDefault();
-
-        /*
-//        System.out.println("менеджер отработал");
-//        System.out.println("вывод тасков- " + taskManager.getTasks());
-//        System.out.println();
-//        System.out.println("вывод епиков- " + taskManager.getEpics());
-//        System.out.println();
-//        System.out.println("вывод сабтасков- " + taskManager.getSubTasks());
-//        System.out.println();
-
-//        SubTask subTask4 = new SubTask("subtask4UP", "StDescript4", Status.DONE, LocalDateTime.parse("2024-11-01T21:00"), Duration.parse("PT10M"), 9, 4);//9
-//        SubTask subTask5 = new SubTask("subtask5UP", "StDescript5", Status.DONE, LocalDateTime.parse("2024-11-01T21:20"), Duration.parse("PT10M"), 10, 4);//10
-        //SubTask subTask6 = new SubTask("subtask6UP", "StDescript6", Status.DONE, LocalDateTime.parse("2024-11-01T21:40"), Duration.parse("PT10M"), 11, 4);//11
-       // SubTask subTask10 = new SubTask("subtask10UP", "StDescript10", Status.NEW, LocalDateTime.parse("2024-11-01T21:55"), Duration.parse("PT10M"), 15, 4);//15
-
-//        taskManager.updateSubTask(subTask4);
-//        taskManager.updateSubTask(subTask5);
-      //  taskManager.updateSubTask(subTask6);
-//        taskManager.updateSubTask(subTask10);
-       // taskManager.addSubTask(subTask10);
-        taskManager.removeTasksById(1);
-        taskManager.removeEpicsById(3);
-        taskManager.removeSubTasksById(10);
-
-        //System.out.println(taskManager.getEpicsById(4).getEndTime());
-        System.out.println("сортированный список-"+taskManager.getPrioritizedTasks());
-        //System.out.println("вывод сабтасков- " + taskManager.getSubTasks());*/
-
-
         ///блок для загрузки задач
         Task task1 = new Task("Task1", "TDescript1", Status.NEW, LocalDateTime.parse("2024-10-31T00:30"), Duration.parse("PT5M"));//0
         Task task2 = new Task("Task2", "TDescript2", Status.NEW, LocalDateTime.parse("2024-10-31T00:20"), Duration.parse("PT5M"));//1
@@ -51,7 +22,7 @@ public class Main {
 
         SubTask subTask1 = new SubTask("subtask1", "StDescript1", Status.NEW, LocalDateTime.parse("2024-10-31T05:30"), Duration.parse("PT5M"), 3);//6
         SubTask subTask2 = new SubTask("subtask2", "StDescript2", Status.NEW, LocalDateTime.parse("2024-10-31T05:40"), Duration.parse("PT5M"), 3);//7
-        SubTask subTask3 = new SubTask("subtask3", "StDescript3", Status.NEW, LocalDateTime.parse("2024-10-31T05:50"), Duration.parse("PT5M"), 3);//8
+        SubTask subTask3 = new SubTask("subtask3", "StDescript3", Status.NEW, LocalDateTime.parse("2024-10-31T05:51"), Duration.parse("PT5M"), 3);//8
 
         SubTask subTask4 = new SubTask("subtask4", "StDescript4", Status.NEW, LocalDateTime.parse("2024-10-31T01:00"), Duration.parse("PT5M"), 4);//9
         SubTask subTask5 = new SubTask("subtask5", "StDescript5", Status.NEW, LocalDateTime.parse("2024-10-31T01:10"), Duration.parse("PT5M"), 4);//10
@@ -82,13 +53,10 @@ public class Main {
         taskManager.addSubTask(subTask8);
         taskManager.addSubTask(subTask9);
 
-
         System.out.println();
         System.out.println("вывод сабтасков-" + taskManager.getSubTasks());
-
-//        Task task4 = new Task("Task3Up", "TDescript3Up", Status.NEW, LocalDateTime.parse("2024-10-29T00:00"), Duration.parse("PT5M"), 2);//2
-//        taskManager.updateTask(task4);
-
+        Task task4 = new Task("Task3Up", "TDescript3Up", Status.NEW, LocalDateTime.parse("2024-10-29T00:00"), Duration.parse("PT5M"), 2);//2
+        taskManager.updateTask(task4);
         System.out.println();
         System.out.println("сортированный список-" + taskManager.getPrioritizedTasks());
         System.out.println();

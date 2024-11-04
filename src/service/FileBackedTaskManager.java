@@ -2,7 +2,6 @@ package service;
 
 import model.*;
 
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -79,8 +78,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             for (Integer subTuskId : subTasks.keySet()) {
                 final Epic epic = epics.get(subTasks.get(subTuskId).getEpicId());
                 epic.addSubTasks(subTuskId);
-                //setEpicStatuses(epic);
-                //epic.setStatus(getEpicStatus(epic));
             }
             for (Integer epicId : epics.keySet()) {
                 final Epic epic = epics.get(epicId);
