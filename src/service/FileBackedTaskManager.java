@@ -2,11 +2,11 @@ package service;
 
 import model.*;
 
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.format.DateTimeParseException;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private String fileName;
@@ -68,19 +68,28 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     epics.put(taskForLoad.getId(), (Epic) taskForLoad);
                 } else if (taskForLoad.getType().equals(TypeOfTask.SUBTASK)) {
                     subTasks.put(taskForLoad.getId(), (SubTask) taskForLoad);
+                    prioritizedTasks.add((SubTask) taskForLoad);
                 } else {
                     tasks.put(taskForLoad.getId(), taskForLoad);
+                    prioritizedTasks.add(taskForLoad);
                 }
             }
             super.id = maxId + 1;
             for (Integer subTuskId : subTasks.keySet()) {
                 final Epic epic = epics.get(subTasks.get(subTuskId).getEpicId());
                 epic.addSubTasks(subTuskId);
-                epic.setStatus(getEpicStatus(epic));
+            }
+            for (Integer epicId : epics.keySet()) {
+                final Epic epic = epics.get(epicId);
+                setEpicStatuses(epic);
+                prioritizedTasks.add(epic);
             }
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("ошибка при чтении файла");
+        } catch (DateTimeParseException e) {
+            e.printStackTrace();
+            System.out.println("ошибка при парсинге строк файла");
         }
     }
 

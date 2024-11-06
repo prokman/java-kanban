@@ -39,8 +39,6 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public void removeNode(Integer id) {
         Node removedNode = history.remove(id);
-
-        //final Task item = removedNode.item;
         if (removedNode != null) {
             final Node next = removedNode.next;
             final Node prev = removedNode.prev;
