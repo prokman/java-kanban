@@ -16,7 +16,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected final TaskComparator taskComparator = new TaskComparator();
     protected final TreeSet<Task> prioritizedTasks = new TreeSet<>(taskComparator);
     protected final HistoryManager historyManager;
-    int id = 0;
+    protected int id = 0;
 
     public InMemoryTaskManager(HistoryManager historyManager) {
         this.tasks = new HashMap<>();
@@ -50,17 +50,32 @@ public class InMemoryTaskManager implements TaskManager {
     //методы удаления всех задач
     @Override
     public void clearTasks() {
+        for (Integer id : tasks.keySet()) {
+            prioritizedTasks.remove(tasks.get(id));
+        }
         tasks.clear();
     }
 
     @Override
     public void clearEpics() {
+        for (Integer id : subTasks.keySet()) {
+            prioritizedTasks.remove(subTasks.get(id));
+        }
+        for (Integer id : epics.keySet()) {
+            prioritizedTasks.remove(epics.get(id));
+        }
         epics.clear();
         subTasks.clear();
     }
 
     @Override
     public void clearSubTasks() {
+        for (Integer id : subTasks.keySet()) {
+            prioritizedTasks.remove(subTasks.get(id));
+        }
+        for (Integer id : epics.keySet()) {
+            prioritizedTasks.remove(epics.get(id));
+        }
         subTasks.clear();
         epics.clear();
     }
@@ -92,8 +107,9 @@ public class InMemoryTaskManager implements TaskManager {
         task.setId(genId());
         if (isAnyPrioritizedTaskCross(task)) {
             System.out.println("Задача task id-" + task.getId() + " пересекается с существующими");
+            id--;
+            throw new ManagerSaveException("пересечение");
         } else {
-
             tasks.put(task.getId(), task);
             prioritizedTasks.add(task);
         }
@@ -106,6 +122,8 @@ public class InMemoryTaskManager implements TaskManager {
         setEpicStatuses(epic);
         if (isAnyPrioritizedTaskCross(epic)) {
             System.out.println("Задача epic id-" + epic.getId() + " пересекается с существующими");
+            id--;
+            throw new ManagerSaveException("пересечение");
         } else {
             epics.put(epic.getId(), epic);
             prioritizedTasks.add(epic);
@@ -116,9 +134,10 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public SubTask addSubTask(SubTask subTask) {
         subTask.setId(genId());
-
         if (isAnyPrioritizedTaskCross(subTask)) {
             System.out.println("Задача subTask id" + subTask.getId() + " пересекается с существующими");
+            id--;
+            throw new ManagerSaveException("пересечение");
         } else {
             subTasks.put(subTask.getId(), subTask);
             final Epic epic = epics.get(subTask.getEpicId());
@@ -137,6 +156,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateTask(Task task) {
         if (isAnyPrioritizedTaskCross(task)) {
             System.out.println("Обновление task id-" + task.getId() + " пересекается с существующими");
+            throw new ManagerSaveException("пересечение");
         } else {
             final Task existTuskForUpdate = tasks.get(task.getId());
             if (existTuskForUpdate != null) {
@@ -156,6 +176,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateEpic(Epic epic) {
         if (isAnyPrioritizedTaskCross(epic)) {
             System.out.println("Обновление epic id-" + epic.getId() + " пересекается с существующими");
+            throw new ManagerSaveException("пересечение");
         } else {
             final Epic existEpicForUpdate = epics.get(epic.getId());
             if (existEpicForUpdate != null) {
@@ -172,6 +193,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateSubTask(SubTask subTask) {
         if (isAnyPrioritizedTaskCross(subTask)) {
             System.out.println("Обновление subTask id-" + subTask.getId() + " пересекается с существующими");
+            throw new ManagerSaveException("пересечение");
         } else {
             final SubTask existSubTaskForUpdate = subTasks.get(subTask.getId());
             if (existSubTaskForUpdate != null) {
@@ -296,27 +318,15 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private boolean isCrossed(Task task1, Task task2) {
-        boolean crossedLeft =
-                (
-                        (task1.getStartTime().isBefore(task2.getStartTime().plus(task2.getDuration()))) ||
-                                (task1.getStartTime().isEqual(task2.getStartTime().plus(task2.getDuration())))
-                )
-                        &&
-                        (
-                                (task1.getStartTime().isAfter(task2.getStartTime())) ||
-                                        (task1.getStartTime().isEqual(task2.getStartTime()))
-                        );
-        boolean crossedRight =
-                (
-                        (task2.getStartTime().isBefore(task1.getStartTime().plus(task2.getDuration()))) ||
-                                (task2.getStartTime().isEqual(task1.getStartTime().plus(task2.getDuration())))
-                )
-                        &&
-                        (
-                                (task2.getStartTime().isAfter(task1.getStartTime())) ||
-                                        (task2.getStartTime().isEqual(task1.getStartTime()))
-                        );
-        boolean crossed = crossedLeft || crossedRight;
+        boolean crossed = false;
+        if (task1.getStartTime().isBefore(task2.getStartTime())) {
+            crossed = task1.getStartTime().plus(task1.getDuration()).isAfter(task2.getStartTime()) ||
+                    task1.getStartTime().plus(task1.getDuration()).isEqual(task2.getStartTime());
+
+        } else if (task2.getStartTime().isBefore(task1.getStartTime())) {
+            crossed = task2.getStartTime().plus(task2.getDuration()).isAfter(task1.getStartTime()) ||
+                    task2.getStartTime().plus(task2.getDuration()).isEqual(task1.getStartTime());
+        } else crossed = true;
         return crossed;
     }
 
