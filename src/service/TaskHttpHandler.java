@@ -19,7 +19,9 @@ public class TaskHttpHandler implements HttpHandler {
         this.gson = gson;
     }
 
-    enum Endpoint {GET_ALL, GET_BY_ID, ADD, UPDATE, DELETE_ALL, DELETE_ID, UNKNOWN}
+    enum Endpoint {
+        GET_ALL, GET_BY_ID, ADD, UPDATE, DELETE_ALL, DELETE_ID, UNKNOWN
+    }
 
     protected void sendText(HttpExchange exchange, String text, int responseCode) throws IOException {
         byte[] resp = text.getBytes(StandardCharsets.UTF_8);
