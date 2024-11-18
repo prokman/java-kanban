@@ -2,10 +2,8 @@ package service;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
-import model.Task;
-
 import java.io.IOException;
-import java.util.Optional;
+
 
 public class HistoryHttpHandler extends TaskHttpHandler {
     public HistoryHttpHandler(TaskManager taskManager, Gson gson) {
