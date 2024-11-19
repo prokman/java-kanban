@@ -23,9 +23,7 @@ public class HttpTaskServer {
     }
 
     public HttpTaskServer(TaskManager taskManager) throws IOException {
-        //public HttpTaskServer() throws IOException {
         this.taskManager = taskManager;
-        //Managers.getDefaultNoFile();
         gson = Managers.getGson();
         httpServer = HttpServer.create(new InetSocketAddress(PORT), 0);
         httpServer.createContext("/tasks", new TaskHttpHandler(taskManager, gson));
@@ -46,7 +44,6 @@ public class HttpTaskServer {
     }
 
     public static void main(String[] args) throws IOException {
-
         HttpTaskServer server = new HttpTaskServer();
 
         Task task1 = new Task("Task1", "TDescript1", Status.NEW, LocalDateTime.parse("2024-10-31T00:30"), Duration.parse("PT5M"));//0
@@ -77,9 +74,3 @@ public class HttpTaskServer {
         server.start();
     }
 }
-
-
-
-
-
-

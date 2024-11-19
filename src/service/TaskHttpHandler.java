@@ -68,99 +68,91 @@ public class TaskHttpHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        try {
-            switch (getEndpoint(exchange)) {
-                case GET_ALL: {
-                    String allTasks = gson.toJson(taskManager.getTasks());
-                    sendText(exchange, allTasks, 200);
+        switch (getEndpoint(exchange)) {
+            case GET_ALL: {
+                String allTasks = gson.toJson(taskManager.getTasks());
+                sendText(exchange, allTasks, 200);
+                break;
+            }
+
+            case GET_BY_ID: {
+                Optional<Integer> idOpt = getPostId(exchange);
+                if (idOpt.isEmpty()) {
+                    sendText(exchange, "Некорректный идентификатор", 400);
+                    return;
+                }
+                int id = idOpt.get();
+                if (taskManager.getTasksById(id) == null) {
+                    sendText(exchange, "Task c id-" + id + " отсутвует", 404);
+                    return;
+                }
+                String task = gson.toJson(taskManager.getTasksById(id));
+                sendText(exchange, task, 200);
+                break;
+            }
+
+            case ADD: {
+                String jsonTask = getTaskFromJson(exchange);
+                Task task = gson.fromJson(jsonTask, Task.class);
+                try {
+                    taskManager.addTask(task);
+                    sendText(exchange, "Задача добавлена", 200);
                     break;
-
-                }
-
-                case GET_BY_ID: {
-                    Optional<Integer> idOpt = getPostId(exchange);
-                    if (idOpt.isEmpty()) {
-                        sendText(exchange, "Некорректный идентификатор", 400);
-                        return;
-                    }
-                    int id = idOpt.get();
-                    if (taskManager.getTasksById(id) == null) {
-                        sendText(exchange, "Task c id-" + id + " отсутвует", 404);
-                        return;
-                    }
-                    String task = gson.toJson(taskManager.getTasksById(id));
-                    sendText(exchange, task, 200);
+                } catch (ManagerSaveException e) {
+                    sendText(exchange, "пересечение с существующей задачей", 406);
                     break;
-                }
-
-                case ADD: {
-                    String jsonTask = getTaskFromJson(exchange);
-                    Task task = gson.fromJson(jsonTask, Task.class);
-                    try {
-                        taskManager.addTask(task);
-                        sendText(exchange, "Задача добавлена", 200);
-                        break;
-                    } catch (ManagerSaveException e) {
-                        sendText(exchange, "пересечение с существующей задачей", 406);
-                        break;
-                    }
-                }
-
-                case UPDATE: {
-                    String jsonTask = getTaskFromJson(exchange);
-                    Optional<Integer> idOpt = getPostId(exchange);
-                    if (idOpt.isEmpty()) {
-                        sendText(exchange, "Некорректный идентификатор", 400);
-                        return;
-                    }
-                    int id = idOpt.get();
-                    if (taskManager.getTasksById(id) == null) {
-                        sendText(exchange, "Task c id-" + id + " отсутвует", 404);
-                        return;
-                    }
-                    try {
-                        Task task = gson.fromJson(jsonTask, Task.class);
-                        task.setId(id);
-                        taskManager.updateTask(task);
-                        sendText(exchange, "Задача обновлена", 200);
-                        break;
-                    } catch (ManagerSaveException e) {
-                        sendText(exchange, "пересечение с существующей задачей", 406);
-                        break;
-                    }
-                }
-
-                case DELETE_ALL: {
-                    taskManager.clearTasks();
-                    sendText(exchange, "Задачи очищены", 200);
-                    break;
-                }
-
-                case DELETE_ID: {
-                    Optional<Integer> idOpt = getPostId(exchange);
-                    if (idOpt.isEmpty()) {
-                        sendText(exchange, "Некорректный идентификатор", 400);
-                        return;
-                    }
-                    int id = idOpt.get();
-                    if (taskManager.getTasksById(id) == null) {
-                        sendText(exchange, "Task c id-" + id + " отсутвует", 404);
-                        return;
-                    }
-                    taskManager.removeTasksById(id);
-                    sendText(exchange, "Task c id-" + id + " удален", 200);
-                    break;
-                }
-
-                default: {
-                    sendText(exchange, "некорректный URL", 404);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            exchange.close();
+
+            case UPDATE: {
+                String jsonTask = getTaskFromJson(exchange);
+                Optional<Integer> idOpt = getPostId(exchange);
+                if (idOpt.isEmpty()) {
+                    sendText(exchange, "Некорректный идентификатор", 400);
+                    return;
+                }
+                int id = idOpt.get();
+                if (taskManager.getTasksById(id) == null) {
+                    sendText(exchange, "Task c id-" + id + " отсутвует", 404);
+                    return;
+                }
+                try {
+                    Task task = gson.fromJson(jsonTask, Task.class);
+                    task.setId(id);
+                    taskManager.updateTask(task);
+                    sendText(exchange, "Задача обновлена", 200);
+                    break;
+                } catch (ManagerSaveException e) {
+                    sendText(exchange, "пересечение с существующей задачей", 406);
+                    break;
+                }
+            }
+
+            case DELETE_ALL: {
+                taskManager.clearTasks();
+                sendText(exchange, "Задачи очищены", 200);
+                break;
+            }
+
+            case DELETE_ID: {
+                Optional<Integer> idOpt = getPostId(exchange);
+                if (idOpt.isEmpty()) {
+                    sendText(exchange, "Некорректный идентификатор", 400);
+                    return;
+                }
+                int id = idOpt.get();
+                if (taskManager.getTasksById(id) == null) {
+                    sendText(exchange, "Task c id-" + id + " отсутвует", 404);
+                    return;
+                }
+                taskManager.removeTasksById(id);
+                sendText(exchange, "Task c id-" + id + " удален", 200);
+                break;
+            }
+
+            default: {
+                sendText(exchange, "некорректный URL", 404);
+            }
         }
     }
-
 }

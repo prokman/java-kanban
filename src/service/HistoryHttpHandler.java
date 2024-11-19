@@ -2,8 +2,8 @@ package service;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
-import java.io.IOException;
 
+import java.io.IOException;
 
 public class HistoryHttpHandler extends TaskHttpHandler {
     public HistoryHttpHandler(TaskManager taskManager, Gson gson) {
@@ -25,22 +25,15 @@ public class HistoryHttpHandler extends TaskHttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        try {
-            switch (getEndpoint(exchange)) {
-                case GET_ALL: {
-                    String allTasks = gson.toJson(taskManager.getHistory());
-                    sendText(exchange, allTasks, 200);
-                    break;
-                }
-
-                default: {
-                    sendText(exchange, "некорректный URL", 404);
-                }
+        switch (getEndpoint(exchange)) {
+            case GET_ALL: {
+                String allTasks = gson.toJson(taskManager.getHistory());
+                sendText(exchange, allTasks, 200);
+                break;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            exchange.close();
+            default: {
+                sendText(exchange, "некорректный URL", 404);
+            }
         }
     }
 }
